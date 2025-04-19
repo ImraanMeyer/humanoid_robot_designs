@@ -5,8 +5,6 @@
 ```mermaid
 ---
 config:
-  look: handDrawn
-  theme: default
   layout: dagre
 ---
 
@@ -29,8 +27,6 @@ flowchart TD
 ```mermaid
 ---
 config:
-  look: handDrawn
-  theme: default
   layout: dagre
 ---
 
@@ -83,37 +79,20 @@ classDiagram
 ```mermaid
 ---
 config:
-  look: handDrawn
-  theme: default
   layout: dagre
 ---
-sequenceDiagram
-    participant User
-    participant CLI
-    participant Robot
-    participant Manipulation
-    participant Prediction
-    participant Learning
-
-    User->>CLI: Enter Command
-    CLI->>Robot: Send Command
-    alt Manipulate Objects
-        Robot->>Manipulation: Detect Object
-        Manipulation-->>Robot: Object Detected
-        Robot->>Manipulation: Grasp Object
-        Manipulation-->>Robot: Object Grasped
-    else Predict Human Actions
-        Robot->>Prediction: Detect Human
-        Prediction-->>Robot: Human Detected
-        Robot->>Prediction: Predict Movement
-        Prediction-->>Robot: Movement Predicted
-    else Learn Tasks
-        Robot->>Learning: Observe Human
-        Learning-->>Robot: Task Learned
-    end
-    Robot-->>CLI: Display Status
-    CLI-->>User: Show Result
-
+stateDiagram-v2    
+ [*] --> Idle
+    Idle --> ReceivingCommand: User Input via CLI
+    ReceivingCommand --> DetectingObject: Manipulate Objects
+    ReceivingCommand --> DetectingHuman: Predict Human Actions
+    ReceivingCommand --> ObservingHuman: Learn Tasks
+    DetectingObject --> GraspingObject: Object Detected
+    GraspingObject --> Idle: Task Completed
+    DetectingHuman --> PredictingMovement: Human Detected
+    PredictingMovement --> Idle: Prediction Complete
+    ObservingHuman --> LearningTask: Demonstration Observed
+    LearningTask --> Idle: Task Learned
 ```
 
 ## State Transition Diagram
@@ -121,8 +100,6 @@ sequenceDiagram
 ```mermaid
 ---
 config:
-  look: handDrawn
-  theme: default
   layout: dagre
 ---
 sequenceDiagram
@@ -135,7 +112,7 @@ sequenceDiagram
 
     User->>CLI: Enter Command
     CLI->>Robot: Send Command
-    alt Manipulate Objects
+    alt Manipulate Objects 
         Robot->>Manipulation: Detect Object
         Manipulation-->>Robot: Object Detected
         Robot->>Manipulation: Grasp Object
